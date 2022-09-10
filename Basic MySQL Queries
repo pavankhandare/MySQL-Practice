@@ -1,0 +1,27 @@
+SHOW TABLES;
+DESCRIBE people; 
+SELECT * FROM sales;
+SELECT Customers, Amount FROM sales;
+SELECT Customers, Amount, Boxes, Amount / Boxes FROM sales;
+SELECT Customers, Amount, Boxes, Amount / Boxes 'Amt per Boxes' FROM sales;
+SELECT * FROM sales WHERE Amount > 10000;	
+SELECT * FROM sales WHERE Amount > 10000 ORDER BY Amount; 	
+SELECT * FROM sales ORDER BY Amount DESC;
+SELECT * FROM sales WHERE geoid='g1' ORDER BY pid, amount DESC;
+SELECT * FROM sales WHERE amount >10000 AND saleDate >= '2022-01-01';
+SELECT saledate, amount FROM sales WHERE amount > 10000 AND YEAR(saledate)=2022 ORDER BY amount DESC;
+SELECT * FROM sales WHERE boxes>0 AND boxes<=50;
+SELECT * FROM sales WHERE boxes BETWEEN 0 AND 50;
+SELECT saledate, amount, WEEKDAY(saledate) AS 'Day of Week' FROM sales WHERE WEEKDAY(saledate)=4;
+SELECT * FROM people;
+SELECT * FROM people WHERE team='Delish' OR team='Jucies';
+SELECT * FROM people WHERE team IN ('Delish','Jucies');
+SELECT * FROM people WHERE salesperson LIKE 'B%';
+SELECT * FROM people WHERE salesperson LIKE '%B%';
+SELECT saledate, amount,
+	CASE WHEN amount < 1000 THEN 'under 1k'
+		WHEN amount < 5000 THEN 'under 5k'
+        WHEN amount < 10000 THEN 'under 10k'
+        ELSE 'more than 10k'
+	END AS 'Amount category'
+FROM sales;
