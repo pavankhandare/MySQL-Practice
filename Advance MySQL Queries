@@ -1,0 +1,66 @@
+SELECT * FROM people;
+SELECT * FROM sales;
+SELECT s.Amount, s.PID, p.Salesperson, p.SPID, s.SPID
+FROM sales AS s 
+JOIN people AS p ON p.spid=s.spid;
+SELECT s.Amount, s.PID, p.Salesperson, p.SPID, s.SPID
+FROM sales s 
+JOIN people p ON p.spid=s.spid;
+SELECT s.Amount, s.SaleDate, pr.product, pr.size
+FROM sales s
+LEFT JOIN products pr ON s.PID=pr.pid;
+SELECT s.Amount, pr.Product, p.Salesperson 
+FROM sales s
+JOIN products pr ON pr.pid=s.pid
+JOIN people p ON p.spid=s.spid;
+SELECT s.Amount, pr.Product, p.Salesperson 
+FROM sales s
+JOIN products pr ON pr.pid=s.pid
+JOIN people p ON p.spid=s.spid
+WHERE s.Amount<500;
+SELECT s.Amount, pr.Product, p.Salesperson, p.Team 
+FROM sales s
+JOIN products pr ON pr.pid=s.pid
+JOIN people p ON p.spid=s.spid
+WHERE s.Amount<500 AND p.Team='Delish';
+SELECT s.Amount, pr.Product, p.Salesperson, p.Team, g.Geo
+FROM sales s
+JOIN products pr ON pr.pid=s.pid
+JOIN people p ON p.spid=s.spid
+JOIN geo g ON g.GeoID=s.GeoID
+WHERE s.Amount<500 AND p.Team='' AND g.Geo IN ('India','New Zealand');
+SELECT s.Amount, pr.Product, p.Salesperson, p.Team, g.Geo
+FROM sales s
+JOIN products pr ON pr.pid=s.pid
+JOIN people p ON p.spid=s.spid
+JOIN geo g ON g.GeoID=s.GeoID
+WHERE s.Amount<500 AND p.Team='' AND g.Geo IN ('India','New Zealand')
+ORDER BY s.SaleDate DESC;
+SELECT GeoID, SUM(amount) 'sum', AVG(Amount) 'avg', SUM(Boxes)
+FROM sales GROUP BY GeoID
+ORDER BY sum;
+SELECT  g.geo, s.GeoID, SUM(amount) 'sum', AVG(Amount) 'avg', SUM(Boxes)
+FROM sales s
+JOIN geo g ON s.GeoID=g.GeoID GROUP BY g.Geo
+ORDER BY sum;
+SELECT p.Team, pr.Category, g.geo, s.GeoID, SUM(amount) 'sum', AVG(Amount) 'avg', SUM(Boxes)
+FROM sales s
+JOIN geo g ON s.GeoID=g.GeoID
+JOIN products pr ON pr.PID=s.PID
+JOIN people p ON p.SPID=s.SPID
+GROUP BY p.Team, pr.category
+ORDER BY sum;
+SELECT p.Team, pr.Category, g.geo, s.GeoID, SUM(amount) 'sum', AVG(Amount) 'avg', SUM(Boxes)
+FROM sales s
+JOIN geo g ON s.GeoID=g.GeoID
+JOIN products pr ON pr.PID=s.PID
+JOIN people p ON p.SPID=s.SPID
+WHERE p.Team<>''
+GROUP BY p.Team, pr.category
+ORDER BY sum;
+SELECT pr.Product,SUM(Amount) AS 'Total Amount'
+FROM sales s
+JOIN products pr ON pr.pid=s.pid
+GROUP BY pr.Product
+ORDER BY `Total Amount` DESC
+LIMIT 10;
